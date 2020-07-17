@@ -87,7 +87,7 @@ class SpeechToText {
 
   /// True if not listening or the user called cancel / stop, false
   /// if cancel/stop were invoked by timeout or error condition.
-  bool _userEnded = false;
+  bool userEnded = false;
   String _lastRecognized = "";
   String _lastStatus = "";
   double _lastSoundLevel = 0;
@@ -200,7 +200,7 @@ class SpeechToText {
   /// *Note:* Cannot be used until a successful [initialize] call. Should
   /// only be used after a successful [listen] call.
   Future<void> stop() async {
-    _userEnded = true;
+    userEnded = true;
     return _stop();
   }
 
@@ -223,7 +223,7 @@ class SpeechToText {
   /// *Note* Cannot be used until a successful [initialize] call. Should only
   /// be used after a successful [listen] call.
   Future<void> cancel() async {
-    _userEnded = true;
+    userEnded = true;
     return _cancel();
   }
 
@@ -290,7 +290,7 @@ class SpeechToText {
     if (!_initWorked) {
       throw SpeechToTextNotInitializedException();
     }
-    _userEnded = false;
+    userEnded = false;
     _cancelOnError = cancelOnError;
     _recognized = false;
     _resultListener = onResult;
@@ -443,7 +443,7 @@ class SpeechToText {
   }
 
   Future<void> _onNotifyError(String errorJson) async {
-    if (isNotListening && _userEnded) {
+    if (isNotListening && userEnded) {
       return;
     }
     Map<String, dynamic> errorMap = jsonDecode(errorJson);
